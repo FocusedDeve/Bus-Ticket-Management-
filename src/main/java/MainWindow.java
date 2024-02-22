@@ -50,32 +50,69 @@ public class MainWindow extends Application {
         Label labelPrenom = new Label("Prénom:");
         TextField textFieldPrenom = new TextField();
 
+        Label labelEmail = new Label("Email:");
+        TextField textFieldEmail = new TextField();
+
+        Label labelPassword = new Label("Password:");
+        TextField textFieldPassword = new TextField();
+
         Button boutonValider = new Button("Valider");
-        boutonValider.setOnAction(e -> validerInscription(textFieldNom.getText(), textFieldPrenom.getText(), fenetreInscription));
+        boutonValider.setOnAction(e -> validerInscription(textFieldNom.getText(), textFieldPrenom.getText(), textFieldEmail.getText(), textFieldPassword.getText(), fenetreInscription));
 
         // Disposer les éléments dans une mise en page
         VBox layoutInscription = new VBox(10);
-        layoutInscription.getChildren().addAll(labelNom, textFieldNom, labelPrenom, textFieldPrenom, boutonValider);
+        layoutInscription.getChildren().addAll(labelNom, textFieldNom, labelPrenom, textFieldPrenom, labelEmail, textFieldEmail, labelPassword, textFieldPassword, boutonValider);
 
         // Configurer la scène de la fenêtre d'inscription
-        Scene sceneInscription = new Scene(layoutInscription, 250, 150);
+        Scene sceneInscription = new Scene(layoutInscription, 250, 400);
         fenetreInscription.setScene(sceneInscription);
 
         // Afficher la fenêtre d'inscription
         fenetreInscription.showAndWait();
     }
 
-    private void validerInscription(String nom, String prenom, Stage fenetreInscription) {
+    private void validerInscription(String nom, String prenom, String email, String textFieldPasswordText, Stage fenetreInscription) {
         // Logique pour valider l'inscription ici (par exemple, ajouter à la base de données)
-        System.out.println("Utilisateur inscrit: Nom - " + nom + ", Prénom - " + prenom);
+        System.out.println("Utilisateur inscrit: Nom - " + nom + ", Prénom - " + prenom +", Email - " + email );
 
         // Fermer la fenêtre d'inscription
         fenetreInscription.close();
     }
 
     private void acheterTicket() {
-        // Logique pour acheter un ticket
-        System.out.println("Ouvrir une fenêtre d'achat de ticket ici...");
+        // Créer une nouvelle fenêtre pour l'achat de ticket
+        Stage fenetreAchatTicket = new Stage();
+        fenetreAchatTicket.initModality(Modality.APPLICATION_MODAL);
+        fenetreAchatTicket.setTitle("Achat de Ticket");
+
+        // Éléments de la fenêtre d'achat de ticket
+        Label labelTypeTicket = new Label("Type de Ticket:");
+        TextField textFieldTypeTicket = new TextField();
+
+        Label labelDestination = new Label("Destination:");
+        TextField textFieldDestination = new TextField();
+
+        Button boutonValiderAchat = new Button("Valider l'Achat");
+        boutonValiderAchat.setOnAction(e -> validerAchatTicket(textFieldTypeTicket.getText(), textFieldDestination.getText(), fenetreAchatTicket));
+
+        // Disposer les éléments dans une mise en page
+        VBox layoutAchatTicket = new VBox(10);
+        layoutAchatTicket.getChildren().addAll(labelTypeTicket, textFieldTypeTicket, labelDestination, textFieldDestination, boutonValiderAchat);
+
+        // Configurer la scène de la fenêtre d'achat de ticket
+        Scene sceneAchatTicket = new Scene(layoutAchatTicket, 250, 150);
+        fenetreAchatTicket.setScene(sceneAchatTicket);
+
+        // Afficher la fenêtre d'achat de ticket
+        fenetreAchatTicket.showAndWait();
+    }
+
+    private void validerAchatTicket(String typeTicket, String destination, Stage fenetreAchatTicket) {
+        // Logique pour valider l'achat de ticket ici (par exemple, générer un ticket, ajouter à la base de données)
+        System.out.println("Ticket acheté: Type - " + typeTicket + ", Destination - " + destination);
+
+        // Fermer la fenêtre d'achat de ticket
+        fenetreAchatTicket.close();
     }
 }
 

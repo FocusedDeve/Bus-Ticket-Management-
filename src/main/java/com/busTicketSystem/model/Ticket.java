@@ -106,6 +106,6 @@ public class Ticket {
             e.printStackTrace();
         }
         // Mise à jour de la propriété codeQR
-        this.codeQR = "E:\\Downloads/codeQR.png";
+        this.codeQR = "E:\\Downloads/barcode.png";
     }
 }
