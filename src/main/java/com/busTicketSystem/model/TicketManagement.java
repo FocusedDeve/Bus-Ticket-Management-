@@ -14,14 +14,17 @@ import java.util.*;
 public class TicketManagement {
     private List<Ticket> tickets = new ArrayList<>();
 
-    public void acheterTicket(int idUtilisateur) {
-        String codeQR = UUID.randomUUID().toString();
+    public void acheterTicket() {
+        String codeQR = genererCodeQR(); // Appel à la méthode pour générer un nouveau code QR
         int ticketID = 1;
-        Ticket ticket = new Ticket(tickets.size() + 1, ticketID, idUtilisateur, codeQR, false);
+        Ticket ticket = new Ticket(tickets.size() + 1, ticketID, codeQR, false);
         tickets.add(ticket);
-        // Appeler la méthode genererCodeQR() après l'achat d'un ticket
-        ticket.genererCodeQR();
         System.out.println("Ticket acheté avec succès. Code QR: " + codeQR);
+
+    }
+    private String genererCodeQR() {
+        // Logique pour générer un nouveau code QR (utilisez ZXing ou une autre bibliothèque)
+        return UUID.randomUUID().toString();
     }
 
     public boolean validerTicket(String codeQR) {

@@ -1,3 +1,4 @@
+import com.busTicketSystem.model.TicketManagement;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -110,6 +111,10 @@ public class MainWindow extends Application {
     private void validerAchatTicket(String typeTicket, String destination, Stage fenetreAchatTicket) {
         // Logique pour valider l'achat de ticket ici (par exemple, générer un ticket, ajouter à la base de données)
         System.out.println("Ticket acheté: Type - " + typeTicket + ", Destination - " + destination);
+
+        // Appeler la méthode acheterTicket pour générer un nouveau ticket avec un code QR
+        TicketManagement ticketManagement = new TicketManagement();
+        ticketManagement.acheterTicket(/* ici, passez l'ID de l'utilisateur approprié */);
 
         // Fermer la fenêtre d'achat de ticket
         fenetreAchatTicket.close();

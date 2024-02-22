@@ -19,7 +19,7 @@ public class BusTickectSystem {
                 System.out.println("Utilisateur inscrit avec succès. ID d'utilisateur : " + userId);
 
                 // Simuler l'achat d'un ticket par l'utilisateur d'ID 1
-                ticketManagement.acheterTicket(userId);
+                ticketManagement.acheterTicket();
                 System.out.println("Simulation d'achat de ticket effectuée.");
 
                 // Simuler la validation du ticket

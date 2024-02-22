@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.EnumMap;
 import java.util.Map;
 
+
 public class Ticket {
 
     private int id;
@@ -66,7 +67,7 @@ public class Ticket {
 
    // private boolean utilise;
 
-    public Ticket(int id, int ticketID, int idUser, String codeQR, boolean utilise) {
+    public Ticket(int id, int ticketID, String codeQR, boolean utilise) {
         this.id = id;
         this.ticketID = ticketID;
         this.idUser = idUser;
@@ -107,5 +108,6 @@ public class Ticket {
         }
         // Mise à jour de la propriété codeQR
         this.codeQR = "E:\\Downloads/barcode.png";
+
     }
 }
