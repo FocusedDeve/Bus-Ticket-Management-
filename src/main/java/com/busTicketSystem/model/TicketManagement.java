@@ -1,50 +1,86 @@
 package com.busTicketSystem.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import com.google.zxing.*;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
 
-public class TicketManagement
-{
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+
+public class TicketManagement {
     private List<Ticket> tickets = new ArrayList<>();
 
     public void acheterTicket(int idUtilisateur) {
         String codeQR = UUID.randomUUID().toString();
-        Ticket ticket = new Ticket(tickets.size() + 1, idUtilisateur, codeQR, false);
+        int ticketID = 1;
+        Ticket ticket = new Ticket(tickets.size() + 1, ticketID, idUtilisateur, codeQR, false);
         tickets.add(ticket);
+        // Appeler la méthode genererCodeQR() après l'achat d'un ticket
+        ticket.genererCodeQR();
         System.out.println("Ticket acheté avec succès. Code QR: " + codeQR);
     }
 
-   /* public void genererCodeQR() {
-        String data = "VotreDonneeAEncoder"; // Remplacez cela par les données que vous souhaitez encoder dans le code QR
-        String filePath = "chemin/vers/le/fichier/codeQR.png"; // Spécifiez le chemin et le nom du fichier de sortie
-
-        int size = 300; // Taille du code QR
-
-        // Configurer les paramètres du code QR
-        Map<EncodeHintType, Object> hintMap = new EnumMap<>(EncodeHintType.class);
-        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
-        hintMap.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-
-        // Créer le code QR
-        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+    public boolean validerTicket(String codeQR) {
+        // Charger l'image du code QR
+        BufferedImage bufferedImage;
         try {
-            BitMatrix bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, size, size, hintMap);
-            BufferedImage bufferedImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
+            bufferedImage = ImageIO.read(new File(codeQR));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
 
-            // Remplir l'image avec les données du code QR
-            for (int x = 0; x < size; x++) {
-                for (int y = 0; y < size; y++) {
-                    bufferedImage.setRGB(x, y, bitMatrix.get(x, y) ? Color.BLACK.getRGB() : Color.WHITE.getRGB());
+        // Configurer les paramètres du décodeur
+        Map<DecodeHintType, Object> hintMap = new EnumMap<>(DecodeHintType.class);
+        hintMap.put(DecodeHintType.PURE_BARCODE, Boolean.TRUE);
+
+        // Décodeur de code QR
+        QRCodeReader reader = new QRCodeReader();
+
+        try {
+            // Convertir l'image en une matrice binaire
+            BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(bufferedImage)));
+
+            // Déchiffrer le code QR
+            Result result = reader.decode(binaryBitmap, hintMap);
+
+            // Récupérer les données du code QR
+            String ticketData = result.getText();
+
+            // Valider le ticket en fonction des données
+            return validerTicketEnFonctionDesDonnees(ticketData);
+        } catch (NotFoundException | ChecksumException | FormatException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean validerTicketEnFonctionDesDonnees(String ticketData) {
+        // Extraire l'ID du ticket à partir des données
+        int ticketID = extraireTicketID(ticketData);
+
+        // Vérifier si le ticket avec cet ID est dans la liste des tickets valides
+        return tickets.stream().anyMatch(ticket -> ticket.getTicketID() == ticketID);
+    }
+
+    private int extraireTicketID(String ticketData) {
+        // Exemple de méthode pour extraire l'ID du ticket à partir des données du code QR
+        String[] elements = ticketData.split(",");
+        for (String element : elements) {
+            String[] keyValue = element.split(":");
+            if (keyValue.length == 2 && keyValue[0].equals("TicketID")) {
+                try {
+                    return Integer.parseInt(keyValue[1]);
+                } catch (NumberFormatException e) {
+                    // Gérer l'exception si la conversion en entier échoue
+                    e.printStackTrace();
                 }
             }
-
-            // Sauvegarder l'image dans un fichier
-            File qrCodeFile = new File(filePath);
-            ImageIO.write(bufferedImage, "png", qrCodeFile);
-            System.out.println("Code QR généré avec succès à l'emplacement : " + filePath);
-        } catch (WriterException | IOException e) {
-            e.printStackTrace();
         }
-    }*/
+        return -1; // Valeur par défaut ou signifiant une erreur
+    }
 }

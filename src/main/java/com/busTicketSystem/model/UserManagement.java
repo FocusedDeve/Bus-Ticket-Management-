@@ -8,7 +8,7 @@ public class UserManagement {
 
     private List<User> users = new ArrayList<>();
 
-    public void inscrireUtilisateur() {
+    public int inscrireUtilisateur() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Inscription");
         System.out.print("Nom: ");
@@ -24,6 +24,7 @@ public class UserManagement {
         User users = new User(id, nom, prenom, email, motDePasse);
         users.add(users);
         System.out.println("Utilisateur inscrit avec succès!");
+        return id;
     }
 
 
