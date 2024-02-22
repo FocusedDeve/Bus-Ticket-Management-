@@ -2,8 +2,10 @@ package com.busTicketSystem.model;
 
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -16,20 +18,44 @@ public class TicketManagement {
 
     public void acheterTicket() {
         String codeQR = genererCodeQR(); // Appel à la méthode pour générer un nouveau code QR
+        genererImageQR(codeQR); // Appel à la méthode pour générer l'image QR
         int ticketID = 1;
         Ticket ticket = new Ticket(tickets.size() + 1, ticketID, codeQR, false);
         tickets.add(ticket);
         System.out.println("Ticket acheté avec succès. Code QR: " + codeQR);
-
     }
+
     private String genererCodeQR() {
         // Logique pour générer un nouveau code QR (utilisez ZXing ou une autre bibliothèque)
         return UUID.randomUUID().toString();
     }
 
+    private void genererImageQR(String codeQR) {
+        try {
+            String filePath = "E:\\Downloads\\" + codeQR + ".png"; // Spécifiez le chemin vers votre dossier
+            int width = 300;
+            int height = 300;
+
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            BitMatrix bitMatrix = qrCodeWriter.encode(codeQR, BarcodeFormat.QR_CODE, width, height);
+
+            BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    bufferedImage.setRGB(x, y, bitMatrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
+                }
+            }
+
+            File file = new File(filePath);
+            ImageIO.write(bufferedImage, "png", file);
+            System.out.println("Image QR générée avec succès : " + filePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public boolean validerTicket(String codeQR) {
         // Charger l'image du code QR
-
         try {
             System.out.println("Trying to read file: " + codeQR);
             BufferedImage bufferedImage = ImageIO.read(new File(codeQR));

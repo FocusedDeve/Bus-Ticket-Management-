@@ -116,6 +116,7 @@ public class MainWindow extends Application {
         TicketManagement ticketManagement = new TicketManagement();
         ticketManagement.acheterTicket(/* ici, passez l'ID de l'utilisateur approprié */);
 
+
         // Fermer la fenêtre d'achat de ticket
         fenetreAchatTicket.close();
     }
