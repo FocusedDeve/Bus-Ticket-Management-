@@ -26,11 +26,13 @@ public class TicketManagement {
 
     public boolean validerTicket(String codeQR) {
         // Charger l'image du code QR
-        BufferedImage bufferedImage;
+
         try {
-            bufferedImage = ImageIO.read(new File(codeQR));
+            System.out.println("Trying to read file: " + codeQR);
+            BufferedImage bufferedImage = ImageIO.read(new File(codeQR));
         } catch (IOException e) {
             e.printStackTrace();
+            System.err.println("Error reading the QR code file.");
             return false;
         }
 
@@ -43,6 +45,7 @@ public class TicketManagement {
 
         try {
             // Convertir l'image en une matrice binaire
+            BufferedImage bufferedImage = null;
             BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(bufferedImage)));
 
             // Déchiffrer le code QR

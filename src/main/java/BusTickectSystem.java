@@ -1,10 +1,15 @@
 import com.busTicketSystem.model.TicketManagement;
 import com.busTicketSystem.model.UserManagement;
+import javafx.application.Application;
 
 public class BusTickectSystem {
 
 
         public static void main(String[] args) {
+
+            // Lancer l'interface utilisateur JavaFX
+            Application.launch(MainWindow.class, args);
+
             UserManagement userManagement = new UserManagement();
             TicketManagement ticketManagement = new TicketManagement();
 
@@ -18,13 +23,13 @@ public class BusTickectSystem {
                 System.out.println("Simulation d'achat de ticket effectuée.");
 
                 // Simuler la validation du ticket
-                String codeQR = "votre_code_qr_simule"; // Remplacez cela par un vrai code QR
+               /* String codeQR = "TicketID:1,UserID:1,Valid:true"; // Remplacez cela par un vrai code QR
                 boolean validationResult = ticketManagement.validerTicket(codeQR);
                 if (validationResult) {
                     System.out.println("Ticket validé avec succès.");
                 } else {
                     System.out.println("La validation du ticket a échoué.");
-                }
+                }*/
             } else {
                 System.out.println("L'inscription de l'utilisateur a échoué. L'achat de ticket est annulé.");
             }
